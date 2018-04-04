@@ -91,11 +91,12 @@ public class Register extends AppCompatActivity {
 
 
         // Check for a valid full name.
-        if (TextUtils.isEmpty(name)) {
-            inputName.setError(getString(R.string.error_field_required));
+        if (!isValidUsername(name)) {
+            inputName.setError("Username needs to be 6-15 in length and cannot start with a number.");
             focusView = inputName;
             cancel = true;
         }
+
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -111,13 +112,12 @@ public class Register extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
-            inputPassword.setError(getString(R.string.error_invalid_password));
-            focusView = inputPassword;
+            inputPassword.setError("Password needs to be 6-20 in length and have high complexity");
             cancel = true;
         }
 
         if (TextUtils.isEmpty(confirmPassword) || !isPasswordValid(confirmPassword)) {
-            inputConfirmPassword.setError(getString(R.string.error_invalid_password));
+            inputConfirmPassword.setError("Password needs to be 6-20 in length and have high complexity");
             focusView = inputConfirmPassword;
             cancel = true;
         }
@@ -150,11 +150,12 @@ public class Register extends AppCompatActivity {
             intent.putExtra("email",inputEmail.getText().toString());
             startActivity(intent);
 
-
         }
     }
 
-
+    public static boolean isValidUsername(String name){
+        return (TextUtils.isEmpty(name) || (name.length()>4) && (name.length()<15) && !Character.isDigit(name.charAt(0)) && name.matches("[A-Za-z0-9]+"));
+    }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -170,7 +171,7 @@ public class Register extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return ((password.length() > 4) && (password.length()<=20) && (password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$")));
     }
 
 
@@ -261,3 +262,9 @@ public class Register extends AppCompatActivity {
     }
 
 }
+
+
+
+
+
+
